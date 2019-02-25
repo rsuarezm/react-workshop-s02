@@ -1,33 +1,38 @@
 import React, { Component } from 'react';
-import {fetchAllBreeds} from '../utils/api';
+import { fetchAllBreeds } from '../utils/api';
 
 class DogBreads extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = { breeds: [] };
+    this.dogBreedsArray = this.dogBreedsArray.bind(this);
   }
-  
+
   componentDidMount() {
-    fetchAllBreeds(data => 
+    fetchAllBreeds(data =>
       this.setState(
-        {breeds: Object.entries(data.message)}
+        { breeds: Object.entries(data.message) }
       )
-      
-      );
+    );
+  }
 
+  dogBreedsArray(breeds) {
+    let list = [];
 
+    for (let [dog, dogBreeds] of breeds) {
+      list.push(<li key={dog}>{dog}</li>)
+      if (dogBreeds.length) dogBreeds.map(perro => list.push(<li key={perro}>{perro}</li>))
+    }
 
+    return list
   }
 
   render() {
-    const  {breeds} = this.state;
+    const { breeds } = this.state;
     return (
       <div>
-        
-        <ul>
-        { breeds.map( breed=> <li key={breed} >{breed} </li> )
-         
-          }
+        <ul className="dogsList">
+          {this.dogBreedsArray(breeds)}
         </ul>
       </div>
     );
